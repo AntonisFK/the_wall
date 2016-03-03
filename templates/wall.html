@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="wrappper">
+		
+		<h3>Post a message {{f_name[0]['first_name']}} {{session['user']}}</h3>
+		{{session['messageid']}}
+		<form action="/message" method="POST">
+			<textarea rows="4" cols="50" name="message" > Enter text here... </textarea>
+			<br>
+			<input type="submit">
+
+		</form>
+	<!-- to go backwords use negative -->
+	<div id= "message">
+		{%for message in message_info[::-1]:%}
+			<h3>{{message['first_name']}} {{message['last_name']}}</h3>
+			<br>
+			<p>{{message['message']}}</p>
+			<br>
+			<p>Posted at:{{message['created_at']}}</p>
+		{% for comment in comments_info[::-1] %}
+						{% if comment['messages_id'] == message['id'] %}
+						<div class="comment">
+						<h5>{{comment['first_name']}} {{comment['last_name']}} - {{comment['created_at']}}</h5>
+						<p>{{comment['comment']}}</p>
+						</div>
+						{% endif %}
+					{% endfor %}
+		<div id="comments">
+			<form action="/process_comment/{{message['id']}}" method="POST">
+				<textarea rows="3" cols="30" name="comment" > Enter comment </textarea>
+				<!-- input type = hidden name= message_id value m{{message['id']}} -->
+				<br>
+				<input type="submit">
+			</form>	
+		</div>
+
+		{%endfor%}
+	</div>
+</body>
+</html>
